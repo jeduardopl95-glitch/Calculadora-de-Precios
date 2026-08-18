@@ -76,24 +76,22 @@
             <section>
                 <label class="block text-sm font-semibold text-gray-700 mb-3">Tipo de Producto</label>
                 <div class="grid grid-cols-2 gap-3">
-                    <button type="button" id="btnBeverage" onclick="setProductType('beverage')" 
+                    <button type="button" id="btnProveedor" onclick="setProductType('proveedor')" 
                         class="border-2 border-blue-500 bg-blue-50 text-blue-700 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" style="display:none;"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19v-7m4 7v-7m4 7v-7m-8-4h.01M14 8h.01M18 8h.01M6 19v-7a4 4 0 018 0v7M6 12a4 4 0 018 0"/>
-                            <!-- Drink icon -->
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" style="display:none;"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z" style="display:none;"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 4h4M9 4l-1 16a2 2 0 002 2h4a2 2 0 002-2l-1-16M9 4h6" />
+                            <!-- Delivery Truck Icon -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                         </svg>
-                        <span class="font-bold text-sm">Bebidas (1.32)</span>
+                        <span class="font-bold text-sm">Proveedor (1.32)</span>
                     </button>
-                    <button type="button" id="btnOther" onclick="setProductType('other')" 
+                    <button type="button" id="btnMerza" onclick="setProductType('merza')" 
                         class="border-2 border-gray-200 bg-gray-50 text-gray-500 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            <!-- Shopping Cart Icon -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
-                        <span class="font-bold text-sm">Otros (1.52)</span>
+                        <span class="font-bold text-sm">Merza / Abarrotes (1.52)</span>
                     </button>
                 </div>
             </section>
@@ -139,7 +137,7 @@
             
             <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-sm mb-4">
                 <div class="text-gray-400">Tipo de producto:</div>
-                <div class="text-right font-semibold" id="resType">Bebida</div>
+                <div class="text-right font-semibold" id="resType">Proveedor</div>
                 
                 <div class="text-gray-400">IEPS:</div>
                 <div class="text-right font-semibold" id="resIeps">Desactivado</div>
@@ -169,10 +167,10 @@
 
     <script>
         // State
-        let currentType = 'beverage'; // 'beverage' or 'other'
+        let currentType = 'proveedor'; // 'proveedor' or 'merza'
         const multipliers = {
-            beverage: 1.32,
-            other: 1.52
+            proveedor: 1.32,
+            merza: 1.52
         };
 
         // Formatter para moneda
@@ -193,15 +191,15 @@
         // UI Interactions
         function setProductType(type) {
             currentType = type;
-            const btnBeverage = document.getElementById('btnBeverage');
-            const btnOther = document.getElementById('btnOther');
+            const btnProveedor = document.getElementById('btnProveedor');
+            const btnMerza = document.getElementById('btnMerza');
 
-            if (type === 'beverage') {
-                btnBeverage.className = "border-2 border-blue-500 bg-blue-50 text-blue-700 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all shadow-sm";
-                btnOther.className = "border-2 border-gray-200 bg-gray-50 text-gray-500 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-gray-100";
+            if (type === 'proveedor') {
+                btnProveedor.className = "border-2 border-blue-500 bg-blue-50 text-blue-700 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all shadow-sm";
+                btnMerza.className = "border-2 border-gray-200 bg-gray-50 text-gray-500 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-gray-100";
             } else {
-                btnOther.className = "border-2 border-purple-500 bg-purple-50 text-purple-700 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all shadow-sm";
-                btnBeverage.className = "border-2 border-gray-200 bg-gray-50 text-gray-500 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-gray-100";
+                btnMerza.className = "border-2 border-purple-500 bg-purple-50 text-purple-700 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all shadow-sm";
+                btnProveedor.className = "border-2 border-gray-200 bg-gray-50 text-gray-500 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-gray-100";
             }
             calculate();
         }
@@ -293,7 +291,7 @@
             const finalSalePrice = Math.round(calculatedSalePrice);
 
             // 7. Mostrar resultados (PASO 8)
-            document.getElementById('resType').textContent = currentType === 'beverage' ? 'Bebida (Refrescos, Jugos...)' : 'Otro Producto';
+            document.getElementById('resType').textContent = currentType === 'proveedor' ? 'Proveedor Directo' : 'Merza / Abarrotes';
             document.getElementById('resIeps').textContent = iepsLabel;
             document.getElementById('resPieces').textContent = pieces;
             document.getElementById('resCost').textContent = currencyFormatter.format(costPerPiece);
@@ -310,7 +308,7 @@
         window.onload = () => {
             document.getElementById('totalPackage').value = '';
             document.getElementById('pieces').value = '';
-            setProductType('beverage');
+            setProductType('proveedor');
             document.getElementById('iepsToggle').checked = false;
         };
     </script>
