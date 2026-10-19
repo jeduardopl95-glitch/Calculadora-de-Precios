@@ -50,8 +50,9 @@
         </header>
 
         <!-- Form Content -->
-        <div class="p-6 space-y-8 flex-1 overflow-y-auto">
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto">
             
+            <!-- 1. Inputs de Paquete y Piezas -->
             <section class="space-y-4">
                 <div>
                     <label for="totalPackage" class="block text-sm font-semibold text-gray-700 mb-2">Precio total del paquete según ticket</label>
@@ -73,6 +74,36 @@
                 </div>
             </section>
 
+            <!-- 2. Impuestos: IVA (16%) y IEPS (8%) -->
+            <section class="space-y-3">
+                <label class="block text-sm font-semibold text-gray-700">Impuestos Adicionales</label>
+                
+                <!-- IVA 16% Toggle -->
+                <div class="bg-gray-50 rounded-2xl border border-gray-200 p-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base font-semibold text-gray-800">Agregar IVA (+16%)</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">Activar si el ticket no lo incluye</p>
+                    </div>
+                    <div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="toggleIva" id="ivaToggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer z-10 transition-all focus:outline-none" onclick="calculate()"/>
+                        <label for="ivaToggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer transition-all"></label>
+                    </div>
+                </div>
+
+                <!-- IEPS 8% Toggle -->
+                <div class="bg-gray-50 rounded-2xl border border-gray-200 p-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base font-semibold text-gray-800">Agregar IEPS (+8%)</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">Activar si aplica impuesto IEPS</p>
+                    </div>
+                    <div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="toggleIeps" id="iepsToggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer z-10 transition-all focus:outline-none" onclick="calculate()"/>
+                        <label for="iepsToggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer transition-all"></label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Tipo de Producto -->
             <section>
                 <label class="block text-sm font-semibold text-gray-700 mb-3">Tipo de Producto</label>
                 <div class="grid grid-cols-2 gap-3">
@@ -83,7 +114,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                         </svg>
-                        <span class="font-bold text-sm">Proveedor (1.32)</span>
+                        <span class="font-bold text-xs text-center">Proveedor (1.32)</span>
                     </button>
                     <button type="button" id="btnMerza" onclick="setProductType('merza')" 
                         class="border-2 border-gray-200 bg-gray-50 text-gray-500 rounded-2xl py-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-gray-100">
@@ -91,38 +122,11 @@
                             <!-- Shopping Cart Icon -->
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
-                        <span class="font-bold text-sm">Merza / Abarrotes (1.52)</span>
+                        <span class="font-bold text-xs text-center">Abarrotes / Aurrera / Merza (1.52)</span>
                     </button>
                 </div>
             </section>
 
-            <section class="bg-gray-50 rounded-2xl border border-gray-200 p-5 space-y-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-base font-semibold text-gray-800">Impuesto IEPS</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">Activar si el ticket lo indica</p>
-                    </div>
-                    
-                    <!-- iOS Style Toggle -->
-                    <div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
-                        <input type="checkbox" name="toggle" id="iepsToggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer z-10 transition-all focus:outline-none" onclick="toggleIeps()"/>
-                        <label for="iepsToggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer transition-all"></label>
-                    </div>
-                </div>
-
-                <div id="iepsConfig" class="hidden pt-3 border-t border-gray-200 transition-all">
-                    <label for="iepsPercent" class="block text-sm font-semibold text-gray-700 mb-2">Porcentaje de IEPS (%)</label>
-                    <div class="relative">
-                        <input type="number" id="iepsPercent" step="0.1" inputmode="decimal" value="8" 
-                            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                            oninput="calculate()">
-                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                            <span class="text-gray-500 font-semibold">%</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
             <!-- Error messages -->
             <div id="errorMessage" class="hidden bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm font-medium border border-red-100">
                 <!-- Error text injected here -->
@@ -135,30 +139,27 @@
         <div id="resultsPanel" class="absolute bottom-0 w-full bg-gray-900 text-white rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] transition-transform duration-300 transform translate-y-full px-6 py-6 border-t border-gray-800">
             <div class="w-12 h-1.5 bg-gray-700 rounded-full mx-auto mb-5"></div>
             
-            <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-sm mb-4">
+            <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs sm:text-sm mb-4">
                 <div class="text-gray-400">Tipo de producto:</div>
-                <div class="text-right font-semibold" id="resType">Proveedor</div>
+                <div class="text-right font-semibold" id="resType">Proveedor (1.32)</div>
                 
-                <div class="text-gray-400">IEPS:</div>
-                <div class="text-right font-semibold" id="resIeps">Desactivado</div>
+                <div class="text-gray-400">Impuestos aplicados:</div>
+                <div class="text-right font-semibold text-yellow-400" id="resTaxes">Ninguno</div>
 
                 <div class="text-gray-400">Piezas:</div>
                 <div class="text-right font-semibold" id="resPieces">0</div>
 
-                <div class="text-gray-400">Costo exacto p/pieza:</div>
+                <div class="text-gray-400">Costo base p/pieza:</div>
                 <div class="text-right font-semibold text-blue-300" id="resCost">$0.00</div>
-                
-                <div class="text-gray-400">Multiplicador:</div>
-                <div class="text-right font-semibold" id="resMultiplier">1.32</div>
 
-                <div class="text-gray-400">Venta (Antes de redondeo):</div>
+                <div class="text-gray-400">Venta calculada:</div>
                 <div class="text-right font-medium text-gray-300" id="resCalc">$0.00</div>
             </div>
 
             <div class="bg-gray-800 rounded-2xl p-4 flex items-center justify-between border border-gray-700">
                 <div>
-                    <div class="text-xs font-bold text-green-400 uppercase tracking-wider mb-1">Precio para Etiqueta</div>
-                    <div class="text-gray-400 text-xs">Venta Final Redondeado</div>
+                    <div class="text-xs font-bold text-green-400 uppercase tracking-wider mb-1">Precio Sugerido Etiqueta</div>
+                    <div class="text-gray-400 text-[10px] sm:text-xs">Redondeo y MKT aplicado</div>
                 </div>
                 <div class="text-4xl font-extrabold text-white tracking-tight" id="resFinal">$0</div>
             </div>
@@ -204,17 +205,6 @@
             calculate();
         }
 
-        function toggleIeps() {
-            const isChecked = document.getElementById('iepsToggle').checked;
-            const configDiv = document.getElementById('iepsConfig');
-            if (isChecked) {
-                configDiv.classList.remove('hidden');
-            } else {
-                configDiv.classList.add('hidden');
-            }
-            calculate();
-        }
-
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             if (message) {
@@ -228,7 +218,7 @@
 
         function showResults() {
             document.getElementById('resultsPanel').classList.remove('translate-y-full');
-            document.querySelector('main').classList.add('pb-80'); // Extra padding so scroll reaches bottom
+            document.querySelector('main').classList.add('pb-80');
         }
 
         function hideResults() {
@@ -236,12 +226,46 @@
             document.querySelector('main').classList.remove('pb-80');
         }
 
+        /**
+         * Aplica la regla de redondeo comercial y psicológica de marketing:
+         * 1. Si los centavos son mayor a .00 sube de entero (ej. 20.10 -> 21, pero 20.00 -> 20).
+         * 2. Evita dígitos percibidos como de baja calidad (1, 3, 7) subiéndolos a (2, 4, 8).
+         * 3. Evita números redondos/planos (0, 5) ajustándolos a termina en 9 y 4.
+         */
+        function applyMarketingRounding(price) {
+            const integerPart = Math.floor(price);
+            const decimalPart = price - integerPart;
+
+            let roundedPrice = integerPart;
+
+            // Si tiene centavos (más de .00), subimos al entero siguiente
+            if (decimalPart > 0.0001) {
+                roundedPrice = integerPart + 1;
+            }
+
+            // Evaluar último dígito
+            const lastDigit = roundedPrice % 10;
+
+            if (lastDigit === 1) {
+                roundedPrice += 1; // 21 -> 22
+            } else if (lastDigit === 3) {
+                roundedPrice += 1; // 23 -> 24
+            } else if (lastDigit === 7) {
+                roundedPrice += 1; // 27 -> 28
+            } else if (lastDigit === 0) {
+                roundedPrice -= 1; // 20 -> 19
+            } else if (lastDigit === 5) {
+                roundedPrice -= 1; // 25 -> 24
+            }
+
+            return roundedPrice;
+        }
+
         // Main Calculation Logic
         function calculate() {
             const totalStr = document.getElementById('totalPackage').value;
             const piecesStr = document.getElementById('pieces').value;
             
-            // Si están vacíos, ocultamos error pero tampoco mostramos resultado
             if (!totalStr || !piecesStr) {
                 showError("");
                 hideResults();
@@ -251,7 +275,6 @@
             const total = parseFloat(totalStr);
             const pieces = parseInt(piecesStr, 10);
 
-            // Validaciones
             if (isNaN(total) || total < 0) {
                 showError("Por favor, introduce un precio total válido.");
                 return;
@@ -261,41 +284,40 @@
                 return;
             }
 
-            showError(""); // Limpiar errores
+            showError("");
 
-            // 1. Obtener precio total y dividir entre piezas (PASO 1 y 2)
+            // 1. Precio total / piezas -> Costo exacto p/pieza (2 decimales)
             const rawCost = total / pieces;
-
-            // 2. Obtener precio de costo con estrictamente dos decimales (PASO 3)
-            // Usamos Math.round sobre la multiplicación para asegurar redondeo exacto de 2 decimales
             const costPerPiece = Math.round(rawCost * 100) / 100;
 
-            // 3. Determinar multiplicador (PASO 4)
-            const multiplier = multipliers[currentType];
-
-            // 4. Calcular precio de venta base (PASO 5)
-            let calculatedSalePrice = costPerPiece * multiplier;
-
-            // 5. Aplicar IEPS si está activado (PASO 6)
+            // 2 & 3. Aplicar IVA e IEPS al costo si están activos
+            const ivaToggle = document.getElementById('ivaToggle').checked;
             const iepsToggle = document.getElementById('iepsToggle').checked;
-            let iepsLabel = "Desactivado";
+
+            let priceWithTaxes = costPerPiece;
+            let taxLabels = [];
+
+            if (ivaToggle) {
+                priceWithTaxes = priceWithTaxes * 1.16;
+                taxLabels.push("IVA (16%)");
+            }
             if (iepsToggle) {
-                const iepsPercent = parseFloat(document.getElementById('iepsPercent').value) || 0;
-                // Aplicamos el % al precio de venta calculado
-                calculatedSalePrice = calculatedSalePrice * (1 + (iepsPercent / 100));
-                iepsLabel = `Activado (${iepsPercent}%)`;
+                priceWithTaxes = priceWithTaxes * 1.08;
+                taxLabels.push("IEPS (8%)");
             }
 
-            // 6. Redondeo comercial usando regla del .50 al precio final (PASO 7)
-            // Math.round de JavaScript aplica exactamente la regla: .50 o más sube, menos de .50 baja.
-            const finalSalePrice = Math.round(calculatedSalePrice);
+            // 4. Multiplicar según tipo de producto (1.32 o 1.52)
+            const multiplier = multipliers[currentType];
+            const calculatedSalePrice = priceWithTaxes * multiplier;
 
-            // 7. Mostrar resultados (PASO 8)
-            document.getElementById('resType').textContent = currentType === 'proveedor' ? 'Proveedor Directo' : 'Merza / Abarrotes';
-            document.getElementById('resIeps').textContent = iepsLabel;
+            // 5. Aplicar reglas de redondeo de marketing
+            const finalSalePrice = applyMarketingRounding(calculatedSalePrice);
+
+            // Mostrar resultados
+            document.getElementById('resType').textContent = currentType === 'proveedor' ? 'Proveedor (1.32)' : 'Abarrotes / Merza (1.52)';
+            document.getElementById('resTaxes').textContent = taxLabels.length > 0 ? taxLabels.join(' + ') : 'Ninguno';
             document.getElementById('resPieces').textContent = pieces;
             document.getElementById('resCost').textContent = currencyFormatter.format(costPerPiece);
-            document.getElementById('resMultiplier').textContent = multiplier.toFixed(2);
             document.getElementById('resCalc').textContent = currencyFormatter.format(calculatedSalePrice);
             
             // Highlighted final output
@@ -308,8 +330,9 @@
         window.onload = () => {
             document.getElementById('totalPackage').value = '';
             document.getElementById('pieces').value = '';
-            setProductType('proveedor');
+            document.getElementById('ivaToggle').checked = false;
             document.getElementById('iepsToggle').checked = false;
+            setProductType('proveedor');
         };
     </script>
 </body>
